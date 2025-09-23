@@ -10,6 +10,7 @@ namespace TestRPG
     {
         private ScreenService screenService;
         private EcsService ecsService;
+        private PlayerService playerService;
         
         [SerializeField] private Button closeButton;
         
@@ -18,10 +19,12 @@ namespace TestRPG
         [Inject]
         private void Construct(
             ScreenService screenService,
-            EcsService ecsService)
+            EcsService ecsService,
+            PlayerService playerService)
         {
             this.screenService = screenService;
             this.ecsService = ecsService;
+            this.playerService = playerService;
         }
 
         public override void Show()
@@ -29,6 +32,7 @@ namespace TestRPG
             closeButton.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
+                    playerService.Clear();
                     ecsService.Disable();
                     screenService.GoTo<StartScreen>();
                 })

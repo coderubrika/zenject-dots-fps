@@ -15,7 +15,7 @@ namespace Suburb.Utils
             this.stateCallback = stateCallback;
         }
         
-        public void GoTo<TState>() where TState : T, new()
+        public void GoTo<TState>() where TState : T
         {
             stateCallback.Invoke(factory.Get<TState>());
         }

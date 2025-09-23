@@ -13,6 +13,7 @@ namespace TestRPG
         private ScreenService screenService;
         private EcsService ecsService;
         private LoadingModalService loadingModalService;
+        private PlayerService playerService;
         
         private readonly CompositeDisposable disposables = new();
         
@@ -20,11 +21,13 @@ namespace TestRPG
         private void Construct(
             ScreenService screenService,
             EcsService ecsService,
-            LoadingModalService loadingModalService)
+            LoadingModalService loadingModalService,
+            PlayerService playerService)
         {
             this.screenService = screenService;
             this.ecsService = ecsService;
             this.loadingModalService = loadingModalService;
+            this.playerService = playerService;
         }
 
         public override void Show()
@@ -48,6 +51,7 @@ namespace TestRPG
             ecsService.Enable()
                 .Subscribe(_ =>
                 {
+                    playerService.SetupPlayer();
                     loadingModalService.Hide();
                     screenService.GoTo<PlayScreen>();
                 }, _ => loadingModalService.Hide())

@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Scenes;
 using Zenject;
 using UniRx;
+using RxUnit = UniRx.Unit;
 
 namespace TestRPG.ECS
 {
@@ -24,7 +25,7 @@ namespace TestRPG.ECS
             Disable();
         }
         
-        public IObservable<Unit> Enable()
+        public IObservable<RxUnit> Enable()
         {
             ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(world);
             return LoadSubScene();
@@ -37,14 +38,14 @@ namespace TestRPG.ECS
             sceneEntity = Entity.Null;
         }
 
-        private IObservable<Unit> LoadSubScene()
+        private IObservable<RxUnit> LoadSubScene()
         {
             sceneEntity = SceneSystem.LoadSceneAsync(
                 world.Unmanaged, 
                 sceneGUID
             );
 
-            Subject<Unit> subject = new();
+            Subject<RxUnit> subject = new();
             IDisposable updateDisposable = null;
             
             updateDisposable = Observable.EveryUpdate()
@@ -65,7 +66,7 @@ namespace TestRPG.ECS
 
                         case SceneSystem.SceneStreamingState.LoadedSuccessfully:
                         {
-                            subject.OnNext(Unit.Default);
+                            subject.OnNext(RxUnit.Default);
                             subject.OnCompleted();
                             updateDisposable?.Dispose();
                             break;

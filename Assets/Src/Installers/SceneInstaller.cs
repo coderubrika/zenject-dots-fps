@@ -2,6 +2,8 @@ using System;
 using Suburb.Inputs;
 using Suburb.Utils;
 using TestRPG.ECS;
+using TestRPG.GameStates;
+using TestRPG.Input;
 using Unity.Scenes;
 using UnityEditor;
 using UnityEngine;
@@ -16,8 +18,14 @@ namespace TestRPG.Installers
         [SerializeField] private LoadingModal loadingModalPrefab;
         [SerializeField] private SubScene subScene;
         [SerializeField] private SceneAsset sceneAsset;
+        [SerializeField] private Camera mainCamera;
+        [SerializeField] private Transform playerBody;
+        [SerializeField] private InputLayout inputLayoutPrefab;
+        
         public override void InstallBindings()
         {
+            Container.BindInstance(mainCamera);
+            
             Container.Bind<InjectCreator>()
                 .AsSingle()
                 .NonLazy();
@@ -52,9 +60,26 @@ namespace TestRPG.Installers
                 .AsSingle()
                 .NonLazy();
             
+            Container.BindInterfacesAndSelfTo<InputLayoutService>()
+                .AsSingle()
+                .WithArguments(inputLayoutPrefab)
+                .NonLazy();
+                
+            Container.Bind<IPlayerInputProvider>().To<MouseKeyboardInputProvider>().AsSingle();
+            Container.Bind<PlayerInputService>().AsSingle();
+            
             Container.BindInterfacesAndSelfTo<Startup>()
                 .AsSingle()
                 .NonLazy();
+
+            Container.Bind<PlayerObject>().AsSingle()
+                .WithArguments(playerBody, mainCamera);
+            
+            Container.Bind<StateFactory<IGameState>>()
+                .To<GameStateFactory>()
+                .AsSingle();
+            
+            Container.Bind<PlayerService>().AsSingle();
         }
     }
 }
