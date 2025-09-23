@@ -49,10 +49,6 @@ namespace TestRPG.Input
                 .Subscribe(delta => RotateAxes = delta)
                 .AddTo(disposables);
             
-            // Observable.EveryLateUpdate()
-            //     .Subscribe(_ => ResetVectors())
-            //     .AddTo(disposables);
-            
             inputProvider.Enable();
         }
 
