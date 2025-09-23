@@ -3,17 +3,20 @@ using Suburb.Utils;
 using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace TestRPG.Input
 {
-    public class MouseKeyboardInputProvider : IPlayerInputProvider
+    public class MouseKeyboardInputProvider : IPlayerInputProvider, IInitializable
     {
         private readonly InjectCreator injectCreator;
         private readonly KeyboardCross keyboardCross;
-        private readonly MovePad movePad;
-        private readonly RectBasedSession movePadSession;
-        private readonly RectBasedSession fireSession;
         private readonly LayerOrderer layerOrderer;
+        private readonly InputLayoutService inputLayoutService;
+        
+        private MovePad movePad;
+        private RectBasedSession movePadSession;
+        private RectBasedSession fireSession;
         
         private readonly CompositeDisposable disposables = new();
 
@@ -29,17 +32,11 @@ namespace TestRPG.Input
             InputLayoutService inputLayoutService,
             LayerOrderer layerOrderer)
         {
+            this.injectCreator = injectCreator;
+            this.inputLayoutService = inputLayoutService;
             this.layerOrderer = layerOrderer;
-            movePad = inputLayoutService.InputLayout.MovePad;
-            keyboardCross = injectCreator.Create<KeyboardCross>();
-
-            movePadSession = new RectBasedSession(movePad.transform as RectTransform);
-            fireSession = new RectBasedSession(movePad.transform as RectTransform);
             
-            var mouseMoveCompositor = injectCreator.Create<MouseMoveCompositor>();
-            movePadSession.AddCompositor(mouseMoveCompositor);
-            var mouseSwipeCompositor = injectCreator.Create<MouseSwipeCompositor>(MouseButtonType.Left);
-            fireSession.AddCompositor(mouseSwipeCompositor);
+            keyboardCross = injectCreator.Create<KeyboardCross>();
         }
         
         public void Enable()
@@ -51,13 +48,16 @@ namespace TestRPG.Input
 
         public void Disable()
         {
+            movePad.gameObject.SetActive(false);
             disposables.Clear();
             MoveDirectionAndForce.Value = (Vector2.zero, 0);
         }
 
         private void EnableMovePad()
         {
-            movePad.Connect(movePadSession.GetMember<MoveMember>())
+            movePad.gameObject.SetActive(true);
+            var moveMember = movePadSession.GetMember<MoveMember>();
+            movePad.Connect(moveMember)
                 .AddTo(disposables);
             
             layerOrderer.ConnectFirst(movePadSession)
@@ -84,6 +84,18 @@ namespace TestRPG.Input
             
             layerOrderer.ConnectFirst(fireSession)
                 .AddTo(disposables);
+        }
+
+        public void Initialize()
+        {
+            movePad = inputLayoutService.InputLayout.MovePad;
+            movePadSession = new RectBasedSession(movePad.MoveRect);
+            fireSession = new RectBasedSession(movePad.MoveRect);
+            
+            var mouseMoveCompositor = injectCreator.Create<MouseMoveCompositor>();
+            movePadSession.AddCompositor(mouseMoveCompositor);
+            var mouseSwipeCompositor = injectCreator.Create<MouseSwipeCompositor>(MouseButtonType.Left);
+            fireSession.AddCompositor(mouseSwipeCompositor);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace TestRPG.Input
     {
         [SerializeField] private MovePad movePad;
         [SerializeField] private TouchPad touchPad;
+        [SerializeField] private RectTransform stickZone;
         [SerializeField] private Stick stick;
         [SerializeField] private Button button;
 
@@ -18,5 +19,6 @@ namespace TestRPG.Input
         public Stick Stick => stick;
 
         public Button Button => button;
+        public RectTransform StickZone => stickZone;
     }
 }

@@ -24,6 +24,10 @@ namespace TestRPG.Input
         public void Initialize()
         {
             InputLayout = injectCreator.Create(inputLayoutPrefab, modalRoot.Root);
+            
+            InputLayout.MovePad.gameObject.SetActive(false);
+            InputLayout.TouchPad.gameObject.SetActive(false);
+            InputLayout.StickZone.gameObject.SetActive(false);
         }
     }
 }

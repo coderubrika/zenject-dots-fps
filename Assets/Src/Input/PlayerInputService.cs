@@ -49,9 +49,9 @@ namespace TestRPG.Input
                 .Subscribe(delta => RotateAxes = delta)
                 .AddTo(disposables);
             
-            Observable.EveryLateUpdate()
-                .Subscribe(_ => ResetVectors())
-                .AddTo(disposables);
+            // Observable.EveryLateUpdate()
+            //     .Subscribe(_ => ResetVectors())
+            //     .AddTo(disposables);
             
             inputProvider.Enable();
         }
@@ -62,16 +62,11 @@ namespace TestRPG.Input
                 return;
 
             isEnabled = false;
-            ResetVectors();
+            MoveDirectionAndForce = (Vector2.zero, 0);
+            RotateAxes = Vector2.zero;
             Fire = false;
             disposables.Clear();
             inputProvider.Disable();
-        }
-
-        private void ResetVectors()
-        {
-            MoveDirectionAndForce = (Vector2.zero, 0);;
-            RotateAxes = Vector2.zero;
         }
     }
 }

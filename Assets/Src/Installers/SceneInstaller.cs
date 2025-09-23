@@ -65,7 +65,7 @@ namespace TestRPG.Installers
                 .WithArguments(inputLayoutPrefab)
                 .NonLazy();
                 
-            Container.Bind<IPlayerInputProvider>().To<MouseKeyboardInputProvider>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MouseKeyboardInputProvider>().AsSingle();
             Container.Bind<PlayerInputService>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<Startup>()

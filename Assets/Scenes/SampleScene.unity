@@ -713,6 +713,8 @@ MonoBehaviour:
   sceneAsset: {fileID: 102900000, guid: 201579e05215c48a7a0c29c84635e01b, type: 3}
   mainCamera: {fileID: 330585545}
   playerBody: {fileID: 4048824272622444524}
+  inputLayoutPrefab: {fileID: 7985957104479001666, guid: 684f3e0d827e840beb5f883740d56a3f,
+    type: 3}
 --- !u!114 &1763179478
 MonoBehaviour:
   m_ObjectHideFlags: 0

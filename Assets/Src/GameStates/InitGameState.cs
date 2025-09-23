@@ -1,4 +1,6 @@
 using Suburb.Utils;
+using TestRPG.Input;
+using UniRx;
 using UnityEngine;
 
 namespace TestRPG.GameStates
@@ -7,13 +9,16 @@ namespace TestRPG.GameStates
     {
         private readonly PlayerObject playerObject;
         private readonly StartGameSettingsRepository startGameSettingsRepository;
+        private readonly PlayerInputService playerInputService;
         
         public InitGameState(
             PlayerObject playerObject, 
-            StartGameSettingsRepository startGameSettingsRepository)
+            StartGameSettingsRepository startGameSettingsRepository,
+            PlayerInputService playerInputService)
         {
             this.playerObject = playerObject;
             this.startGameSettingsRepository = startGameSettingsRepository;
+            this.playerInputService = playerInputService;
         }
         
         public void Apply(StateRouter<IGameState> router, GameContext gameContext)
@@ -28,12 +33,21 @@ namespace TestRPG.GameStates
             playerCamera.transform.rotation = playerTransform.rotation;
             
             playerTransform.gameObject.SetActive(true);
-            // далее нужно обработать ввод наверное что вообще нужно 
-            // вообще по идее нужно задать начальное положение
-            // нужно определить как будет меняться физика
-            // нужно настроить Authoring таким образом чтобы получить положение и направление player
-            // так попробую для начала определить ввод обобщенно
+    
+            playerInputService.Enable();
             
+            Observable.EveryUpdate()
+                .Subscribe(_ =>
+                {
+                    if (playerInputService.Fire)
+                        this.Log("Fire");
+                    
+                    if (playerInputService.MoveDirectionAndForce.Direction != Vector2.zero)
+                        this.Log($"move {playerInputService.MoveDirectionAndForce}");
+                    
+                    if (playerInputService.RotateAxes != Vector2.zero)
+                        this.Log($"RotateAxes: {playerInputService.RotateAxes}");
+                });
         }
     }
 }
