@@ -13,6 +13,8 @@ namespace TestRPG.ECS
         private Entity sceneEntity;
         
         private readonly Hash128 sceneGUID;
+
+        public EntityManager EntityManager => world.EntityManager;
         
         public EcsService(SubScene subScene)
         {

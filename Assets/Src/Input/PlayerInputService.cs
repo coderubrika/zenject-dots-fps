@@ -1,3 +1,4 @@
+using Suburb.Utils;
 using UniRx;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ namespace TestRPG.Input
                 .AddTo(disposables);
 
             inputProvider.RotateAxes
-                .Subscribe(delta => RotateAxes = delta)
+                .Subscribe(delta => RotateAxes = delta.SwapAxes())
                 .AddTo(disposables);
             
             inputProvider.Enable();

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778b7402eea744a0a068f4f258049ef8, type: 3}
   m_Name: StartGameSettingsRepository
   m_EditorClassIdentifier: 
-  startPlayerPosition: {x: 0, y: 0, z: 0}
+  startPlayerPosition: {x: 5, y: 0, z: 0}
   startPlayerRotationAngles: {x: 0, y: 0, z: 0}
   playerCameraOffset: {x: 0, y: 1.6, z: 0}
