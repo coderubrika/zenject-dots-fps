@@ -51,15 +51,6 @@ namespace TestRPG.ECS
                 Rotation = quaternion.identity,
                 Scale = 1f
             });
-        
-            // Добавляем компонент движения к цели
-            // state.EntityManager.AddComponentData(enemy, new MoveToTarget
-            // {
-            //     TargetPosition = spawner.TargetPosition,
-            //     Speed = spawner.EnemySpeed
-            // });
-            
-            //state.EntityManager.AddComponent<EnemyTag>(enemy);
         }
     }
 }

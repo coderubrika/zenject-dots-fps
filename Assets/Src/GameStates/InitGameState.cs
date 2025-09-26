@@ -6,6 +6,7 @@ using UniRx;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -92,6 +93,12 @@ namespace TestRPG.GameStates
                 Rotation = playerTransform.rotation,
                 Scale = 1
             });
+            
+            var physicsMass = ecsService.EntityManager.GetComponentData<PhysicsMass>(gameContext.PlayerEntity);
+            physicsMass.InverseInertia.x = 0;
+            physicsMass.InverseInertia.z = 0;
+            physicsMass.InverseInertia.y = 0;
+            ecsService.EntityManager.SetComponentData(gameContext.PlayerEntity, physicsMass);
             
             query.Dispose();
             entities.Dispose();

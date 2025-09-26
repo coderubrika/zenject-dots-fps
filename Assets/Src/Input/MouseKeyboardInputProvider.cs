@@ -41,6 +41,9 @@ namespace TestRPG.Input
         
         public void Enable()
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
             EnableMovePad();
             EnableKeyboardCross();
             EnableFire();
@@ -48,6 +51,9 @@ namespace TestRPG.Input
 
         public void Disable()
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
             movePad.gameObject.SetActive(false);
             disposables.Clear();
             MoveDirectionAndForce.Value = (Vector2.zero, 0);

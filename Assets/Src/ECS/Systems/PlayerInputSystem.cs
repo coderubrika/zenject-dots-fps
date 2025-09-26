@@ -24,7 +24,7 @@ namespace TestRPG.ECS
                          playerCameraRotation,
                          player) 
                      in SystemAPI.Query<
-                         RefRW<PhysicsVelocity>, 
+                         RefRW<PhysicsVelocity>,
                          RefRW<LocalTransform>, 
                          RefRO<MoveSpeed>,
                          RefRO<PlayerCameraRotation>, 
@@ -33,7 +33,7 @@ namespace TestRPG.ECS
                 var horizontalRotation = quaternion.RotateY(
                     playerInput.RotateAxis.y * SystemAPI.Time.DeltaTime * playerCameraRotation.ValueRO.HorizontalSpeed);
                 
-                transform.ValueRW.Rotation = math.mul(horizontalRotation, transform.ValueRW.Rotation);
+                transform.ValueRW.Rotation = math.mul(transform.ValueRW.Rotation, horizontalRotation);
                 
                 var cameraTransform = SystemAPI.GetComponent<LocalTransform>(player.ValueRO.CameraObject);
                 

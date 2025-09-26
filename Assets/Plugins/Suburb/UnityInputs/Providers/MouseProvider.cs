@@ -93,9 +93,8 @@ namespace Suburb.Inputs
         
         private void CalcPositionAndDelta()
         {
-            Vector2 newPosition = inputControls.Mouse.Position.ReadValue<Vector2>();
-            Delta = newPosition - Position;
-            Position = newPosition;
+            Delta = inputControls.Mouse.Delta.ReadValue<Vector2>();
+            Position = inputControls.Mouse.Position.ReadValue<Vector2>();;
             
             if (Delta != Vector2.zero)
                 OnMove.Execute();
