@@ -119,18 +119,6 @@ namespace TestRPG.GameStates
 
                     playerCamera.transform.position = cameraLocalTransform.Position;
                     playerCamera.transform.rotation = cameraLocalTransform.Rotation;
-                    
-                    // playerCamera.transform.position = Vector3.Lerp(
-                    //     playerCamera.transform.position, 
-                    //     playerLocalTransform.TransformPoint(cameraLocalTransform.Position), 
-                    //     0.3f
-                    // );
-                    //
-                    // playerCamera.transform.rotation = Quaternion.Lerp(
-                    //     playerCamera.transform.rotation,
-                    //     math.mul(playerLocalTransform.Rotation, cameraLocalTransform.Rotation),
-                    //     0.3f
-                    // );
                 });
 
             gameContext.SetPlayerAndCameraTransformBridge(disposable);
