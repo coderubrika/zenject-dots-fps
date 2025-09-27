@@ -20,7 +20,7 @@ namespace TestRPG.GameStates
         private readonly EcsService ecsService;
 
         private GameContext gameContext;
-        private Transform playerTransform;
+        //private Transform playerTransform;
         private Camera playerCamera;
         
         public InitGameState(
@@ -38,25 +38,13 @@ namespace TestRPG.GameStates
         public void Apply(StateRouter<IGameState> router, GameContext gameContext)
         {
             this.gameContext = gameContext;
-            playerTransform = playerObject.PlayerTransform;
             playerCamera = playerObject.PlayerCamera;
-
-            SetupPlayerTransform();
-            playerTransform.gameObject.SetActive(true);
             SetupPlayerInputBridge();
             SetupEcsPlayerTransform();
             SetupEcsPlayerCameraTransform();
             SyncEcsPlayerAndCamera();
         }
 
-        private void SetupPlayerTransform()
-        {
-            playerTransform.position = startGameSettingsRepository.StartPlayerPosition;
-            playerTransform.rotation = Quaternion.Euler(startGameSettingsRepository.StartPlayerRotationAngles);
-
-            playerCamera.transform.position = playerTransform.position + startGameSettingsRepository.PlayerCameraOffset;
-            playerCamera.transform.rotation = playerTransform.rotation;
-        }
         
         private void SetupPlayerInputBridge()
         {
@@ -89,8 +77,8 @@ namespace TestRPG.GameStates
             gameContext.SetPlayerEntity(entities[0]);
             ecsService.EntityManager.SetComponentData(gameContext.PlayerEntity, new LocalTransform
             {
-                Position = playerTransform.position,
-                Rotation = playerTransform.rotation,
+                Position = startGameSettingsRepository.StartPlayerPosition,
+                Rotation = Quaternion.Euler(startGameSettingsRepository.StartPlayerRotationAngles),
                 Scale = 1
             });
             
@@ -108,8 +96,10 @@ namespace TestRPG.GameStates
         {
             Player player = ecsService.EntityManager.GetComponentData<Player>(gameContext.PlayerEntity);
             gameContext.SetPlayerCameraEntity(player.CameraObject);
-
-            Vector3 cameraLocalPosition = playerTransform.InverseTransformPoint(playerCamera.transform.position);
+            PlayerCameraSettings playerCameraSettings =
+                ecsService.EntityManager.GetComponentData<PlayerCameraSettings>(gameContext.PlayerEntity);
+            
+            Vector3 cameraLocalPosition = startGameSettingsRepository.StartPlayerPosition + (Vector3)playerCameraSettings.Offset;
             ecsService.EntityManager.SetComponentData(gameContext.PlayerCameraEntity, new LocalTransform
             {
                 Position = cameraLocalPosition,
@@ -124,16 +114,23 @@ namespace TestRPG.GameStates
                 .ObserveOnMainThread()
                 .Subscribe(_ =>
                 {
-                    LocalTransform playerLocalTransform =
-                        ecsService.EntityManager.GetComponentData<LocalTransform>(gameContext.PlayerEntity);
-                    playerTransform.position = playerLocalTransform.Position;
-                    playerTransform.rotation = playerLocalTransform.Rotation;
-
                     LocalTransform cameraLocalTransform =
                         ecsService.EntityManager.GetComponentData<LocalTransform>(gameContext.PlayerCameraEntity);
 
-                    playerCamera.transform.position = playerTransform.TransformPoint(cameraLocalTransform.Position);
-                    playerCamera.transform.rotation = playerTransform.rotation * cameraLocalTransform.Rotation;
+                    playerCamera.transform.position = cameraLocalTransform.Position;
+                    playerCamera.transform.rotation = cameraLocalTransform.Rotation;
+                    
+                    // playerCamera.transform.position = Vector3.Lerp(
+                    //     playerCamera.transform.position, 
+                    //     playerLocalTransform.TransformPoint(cameraLocalTransform.Position), 
+                    //     0.3f
+                    // );
+                    //
+                    // playerCamera.transform.rotation = Quaternion.Lerp(
+                    //     playerCamera.transform.rotation,
+                    //     math.mul(playerLocalTransform.Rotation, cameraLocalTransform.Rotation),
+                    //     0.3f
+                    // );
                 });
 
             gameContext.SetPlayerAndCameraTransformBridge(disposable);
