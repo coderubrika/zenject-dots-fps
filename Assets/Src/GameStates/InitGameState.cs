@@ -83,9 +83,7 @@ namespace TestRPG.GameStates
             });
             
             var physicsMass = ecsService.EntityManager.GetComponentData<PhysicsMass>(gameContext.PlayerEntity);
-            physicsMass.InverseInertia.x = 0;
-            physicsMass.InverseInertia.z = 0;
-            physicsMass.InverseInertia.y = 0;
+            physicsMass.InverseInertia = float3.zero;
             ecsService.EntityManager.SetComponentData(gameContext.PlayerEntity, physicsMass);
             
             query.Dispose();

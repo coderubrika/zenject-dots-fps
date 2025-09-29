@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
 
 namespace TestRPG.ECS
@@ -13,6 +14,9 @@ namespace TestRPG.ECS
         
         private Entity enemySpawnSettingsEntity;
         private bool isInit;
+        private PhysicsMass prefabMass;
+        private FollowToTarget prefabFollowToTarget;
+        private bool isPrefabInit;
         
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -37,11 +41,19 @@ namespace TestRPG.ECS
             
             var playerTransform = SystemAPI.GetComponentRO<LocalTransform>(playerEntity);
             float deltaTime = SystemAPI.Time.DeltaTime;
-
             var spawnSettings = SystemAPI.GetComponentRW<EnemySpawnSettings>(enemySpawnSettingsEntity);
-            
             var spawnerData = spawnSettings.ValueRO;
             spawnSettings.ValueRW.NextSpawnTime -= deltaTime;
+
+            if (!isPrefabInit)
+            {
+                isPrefabInit = true;
+                prefabMass = state.EntityManager.GetComponentData<PhysicsMass>(spawnSettings.ValueRO.Prefab);
+                prefabMass.InverseInertia = float3.zero;
+                
+                prefabFollowToTarget = state.EntityManager.GetComponentData<FollowToTarget>(spawnSettings.ValueRO.Prefab);
+                prefabFollowToTarget.Target = playerEntity;
+            }
             
             if (spawnerData.NextSpawnTime <= 0f)
             {
@@ -67,6 +79,9 @@ namespace TestRPG.ECS
                 Rotation = quaternion.identity,
                 Scale = 1f
             });
+            
+            ecb.SetComponent(enemy, prefabMass);
+            ecb.SetComponent(enemy, prefabFollowToTarget);
         }
     }
 }

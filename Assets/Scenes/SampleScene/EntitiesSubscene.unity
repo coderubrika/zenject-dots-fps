@@ -398,6 +398,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6238579847338133136, guid: 2cf9302d6e3e94905bfce4665ac7d58c,
         type: 3}
+      propertyPath: spawnRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238579847338133136, guid: 2cf9302d6e3e94905bfce4665ac7d58c,
+        type: 3}
       propertyPath: spawnInterval
       value: 3
       objectReference: {fileID: 0}
@@ -1455,7 +1460,7 @@ Transform:
   m_GameObject: {fileID: 3042390283244732612}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1.3983254e-20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
