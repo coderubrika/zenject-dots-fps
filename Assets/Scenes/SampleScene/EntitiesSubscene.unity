@@ -399,7 +399,12 @@ PrefabInstance:
     - target: {fileID: 6238579847338133136, guid: 2cf9302d6e3e94905bfce4665ac7d58c,
         type: 3}
       propertyPath: spawnRadius
-      value: 20
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238579847338133136, guid: 2cf9302d6e3e94905bfce4665ac7d58c,
+        type: 3}
+      propertyPath: maxEnemyCount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6238579847338133136, guid: 2cf9302d6e3e94905bfce4665ac7d58c,
         type: 3}
@@ -1418,6 +1423,7 @@ GameObject:
   - component: {fileID: 8545693893736119014}
   - component: {fileID: 8545693893736119015}
   - component: {fileID: 8545693893736119016}
+  - component: {fileID: 8545693893736119017}
   m_Layer: 0
   m_Name: UnitPlayer
   m_TagString: Untagged
@@ -1460,7 +1466,7 @@ Transform:
   m_GameObject: {fileID: 3042390283244732612}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.3983254e-20}
+  m_LocalPosition: {x: -35.7, y: 116.3, z: 6.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1745,6 +1751,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d72bfce52d8549f98b5d26b11d2cd9f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8545693893736119017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3042390283244732612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c9e8cc994234c9f9a28a6f1c5d5e5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 10
 --- !u!4 &8623623365664415309
 Transform:
   m_ObjectHideFlags: 0

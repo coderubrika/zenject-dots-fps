@@ -9,7 +9,8 @@ namespace TestRPG.ECS
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private float spawnRadius;
         [SerializeField] private float spawnInterval;
-
+        [SerializeField] private int maxEnemyCount;
+        
         public class Baker : Baker<EnemySpawnSettingsAuthoring>
         {
             public override void Bake(EnemySpawnSettingsAuthoring authoring)
@@ -20,7 +21,9 @@ namespace TestRPG.ECS
                     Prefab = GetEntity(authoring.enemyPrefab, TransformUsageFlags.Dynamic),
                     SpawnRadius = authoring.spawnRadius,
                     SpawnInterval = authoring.spawnInterval,
-                    NextSpawnTime = 0f
+                    NextSpawnTime = 0f,
+                    MaxEnemyCount = authoring.maxEnemyCount,
+                    EnemyCount = 0
                 });
             }
         }
@@ -32,5 +35,7 @@ namespace TestRPG.ECS
         public float SpawnRadius;
         public float SpawnInterval;
         public float NextSpawnTime;
+        public int MaxEnemyCount;
+        public int EnemyCount;
     }
 }

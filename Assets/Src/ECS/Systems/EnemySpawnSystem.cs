@@ -14,8 +14,9 @@ namespace TestRPG.ECS
         
         private Entity enemySpawnSettingsEntity;
         private bool isInit;
-        private PhysicsMass prefabMass;
-        private FollowToTarget prefabFollowToTarget;
+        private PhysicsMass mass;
+        private FollowToTarget followToTarget;
+        private AttackTarget attackTarget;
         private bool isPrefabInit;
         
         [BurstCompile]
@@ -48,16 +49,24 @@ namespace TestRPG.ECS
             if (!isPrefabInit)
             {
                 isPrefabInit = true;
-                prefabMass = state.EntityManager.GetComponentData<PhysicsMass>(spawnSettings.ValueRO.Prefab);
-                prefabMass.InverseInertia = float3.zero;
+                mass = state.EntityManager.GetComponentData<PhysicsMass>(spawnSettings.ValueRO.Prefab);
+                mass.InverseInertia = float3.zero;
                 
-                prefabFollowToTarget = state.EntityManager.GetComponentData<FollowToTarget>(spawnSettings.ValueRO.Prefab);
-                prefabFollowToTarget.Target = playerEntity;
+                followToTarget = state.EntityManager.GetComponentData<FollowToTarget>(spawnSettings.ValueRO.Prefab);
+                followToTarget.Target = playerEntity;
+
+                attackTarget = state.EntityManager.GetComponentData<AttackTarget>(spawnSettings.ValueRO.Prefab);
+                attackTarget.Target = playerEntity;
             }
             
             if (spawnerData.NextSpawnTime <= 0f)
             {
-                SpawnEnemy(ref state, spawnerData, playerTransform.ValueRO.Position);
+                if (spawnSettings.ValueRO.EnemyCount < spawnSettings.ValueRO.MaxEnemyCount)
+                {
+                    SpawnEnemy(ref state, spawnerData, playerTransform.ValueRO.Position);
+                    spawnSettings.ValueRW.EnemyCount += 1;
+                }
+                
                 spawnSettings.ValueRW.NextSpawnTime = spawnerData.SpawnInterval;
             }
         }
@@ -80,8 +89,9 @@ namespace TestRPG.ECS
                 Scale = 1f
             });
             
-            ecb.SetComponent(enemy, prefabMass);
-            ecb.SetComponent(enemy, prefabFollowToTarget);
+            ecb.SetComponent(enemy, mass);
+            ecb.SetComponent(enemy, followToTarget);
+            ecb.SetComponent(enemy, attackTarget);
         }
     }
 }
