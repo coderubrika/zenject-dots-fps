@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
+using Random = Unity.Mathematics.Random;
 
 namespace TestRPG.ECS
 {
