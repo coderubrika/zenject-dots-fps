@@ -32,7 +32,7 @@ namespace TestRPG.Installers
             
             Container.BindInterfacesAndSelfTo<EcsService>()
                 .AsSingle()
-                .WithArguments(subScene)
+                .WithArguments(subScene, sceneAsset)
                 .NonLazy();
             
             Container.BindInterfacesAndSelfTo<ModalRoot>()

@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Scenes;
 using Zenject;
 using UniRx;
+using UnityEditor;
 using RxUnit = UniRx.Unit;
 
 namespace TestRPG.ECS
@@ -12,13 +13,15 @@ namespace TestRPG.ECS
         private World world;
         private Entity sceneEntity;
         
-        private readonly Hash128 sceneGUID;
+        private readonly SceneAsset sceneAsset;
+        private readonly SubScene subScene;
 
         public EntityManager EntityManager => world.EntityManager;
         
-        public EcsService(SubScene subScene)
+        public EcsService(SubScene subScene, SceneAsset sceneAsset)
         {
-            sceneGUID = subScene.SceneGUID;
+            this.sceneAsset = sceneAsset;
+            this.subScene = subScene;
         }
         
         public void Initialize()
@@ -29,6 +32,7 @@ namespace TestRPG.ECS
         
         public IObservable<RxUnit> Enable()
         {
+            subScene.SceneAsset = sceneAsset;
             ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(world);
             return LoadSubScene();
         }
@@ -38,13 +42,14 @@ namespace TestRPG.ECS
             SceneSystem.UnloadScene(world.Unmanaged, sceneEntity, SceneSystem.UnloadParameters.DestroyMetaEntities);
             ScriptBehaviourUpdateOrder.RemoveWorldFromCurrentPlayerLoop(world);
             sceneEntity = Entity.Null;
+            subScene.SceneAsset = null;
         }
 
         private IObservable<RxUnit> LoadSubScene()
         {
             sceneEntity = SceneSystem.LoadSceneAsync(
                 world.Unmanaged, 
-                sceneGUID
+                subScene.SceneGUID
             );
 
             Subject<RxUnit> subject = new();
