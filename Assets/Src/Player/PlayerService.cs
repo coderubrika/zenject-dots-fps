@@ -1,7 +1,7 @@
 using Suburb.Utils;
 using TestRPG.GameStates;
 
-namespace TestRPG
+namespace TestRPG.PlayerDir
 {
     public class PlayerService
     {
@@ -11,6 +11,8 @@ namespace TestRPG
         
         private IGameState state;
         private GameContext context;
+
+        public PlayerData PlayerData => context.PlayerData;
         
         public PlayerService(
             PlayerObject playerObject,

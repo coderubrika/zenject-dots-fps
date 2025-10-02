@@ -4,6 +4,7 @@ using Suburb.Utils;
 using TestRPG.ECS;
 using TestRPG.GameStates;
 using TestRPG.Input;
+using TestRPG.PlayerDir;
 using Unity.Scenes;
 using UnityEditor;
 using UnityEngine;

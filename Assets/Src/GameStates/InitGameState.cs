@@ -2,6 +2,7 @@ using System;
 using Suburb.Utils;
 using TestRPG.ECS;
 using TestRPG.Input;
+using TestRPG.PlayerDir;
 using UniRx;
 using Unity.Collections;
 using Unity.Entities;
@@ -20,7 +21,6 @@ namespace TestRPG.GameStates
         private readonly EcsService ecsService;
 
         private GameContext gameContext;
-        //private Transform playerTransform;
         private Camera playerCamera;
         
         public InitGameState(
@@ -43,6 +43,7 @@ namespace TestRPG.GameStates
             SetupEcsPlayerTransform();
             SetupEcsPlayerCameraTransform();
             SyncEcsPlayerAndCamera();
+            SetupPlayerData();
         }
 
         
@@ -120,6 +121,28 @@ namespace TestRPG.GameStates
                 });
 
             gameContext.SetPlayerAndCameraTransformBridge(disposable);
+        }
+
+        private void SetupPlayerData()
+        {
+            Health health = ecsService.EntityManager.GetComponentData<Health>(gameContext.PlayerEntity);
+            MoveSpeed moveSpeed = ecsService.EntityManager.GetComponentData<MoveSpeed>(gameContext.PlayerEntity);
+            
+            gameContext.SetPlayerData(new PlayerData(
+                new FloatValue(health.Value, health.Value),
+                new FloatValue(moveSpeed.Value, moveSpeed.Value),
+                new FloatValue(0, float.MaxValue),
+                new FloatValue(0, float.MaxValue)
+                ));
+
+            IDisposable disposable = Observable.EveryLateUpdate()
+                .Subscribe(_ =>
+                {
+                    Health currentHealth = ecsService.EntityManager.GetComponentData<Health>(gameContext.PlayerEntity);
+                    gameContext.PlayerData.Health.SetValue(currentHealth.Value);
+                });
+            
+            gameContext.SetPlayerDataBridge(disposable);
         }
     }
 }

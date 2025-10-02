@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TestRPG
+namespace TestRPG.PlayerDir
 {
     public class PlayerObject
     {

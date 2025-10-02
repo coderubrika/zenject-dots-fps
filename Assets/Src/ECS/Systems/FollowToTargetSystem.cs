@@ -29,20 +29,19 @@ namespace TestRPG.ECS
             if (distanceSq <= minDistanceSq)
             {
                 isCloseDistance.Value = true;
+                return;
             }
-            else
-            {
-                isCloseDistance.Value = false;
-                dir /= math.sqrt(distanceSq);
+            
+            isCloseDistance.Value = false;
+            dir /= math.sqrt(distanceSq);
                 
-                localTransform.Rotation = math.slerp(
-                    localTransform.Rotation,
-                    quaternion.LookRotation(dir, math.up()),
-                    DeltaTime * horizontalRotationSpeed.Value);
+            localTransform.Rotation = math.slerp(
+                localTransform.Rotation,
+                quaternion.LookRotation(dir, math.up()),
+                DeltaTime * horizontalRotationSpeed.Value);
                 
-                physicsVelocity.Linear = dir * moveSpeed.Value;
-                physicsVelocity.Angular = 0;
-            }
+            physicsVelocity.Linear = dir * moveSpeed.Value;
+            physicsVelocity.Angular = 0;
         }
     }
     

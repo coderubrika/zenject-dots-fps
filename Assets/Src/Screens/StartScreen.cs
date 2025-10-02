@@ -1,4 +1,5 @@
 using TestRPG.ECS;
+using TestRPG.PlayerDir;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;

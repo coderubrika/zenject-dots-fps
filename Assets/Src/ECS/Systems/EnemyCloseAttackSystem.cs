@@ -76,12 +76,12 @@ namespace TestRPG.ECS
             ref CanAttack canAttack)
         {
             if (canAttack.Value)
-                goto End;
+                return;
             
             if (!isCloseDistance.Value)
             {
                 repeatingAttackSettings.CurrentTimeSec = 0;
-                goto End;
+                return;
             }
             
             repeatingAttackSettings.CurrentTimeSec += DeltaTime;
@@ -91,8 +91,6 @@ namespace TestRPG.ECS
                 repeatingAttackSettings.CurrentTimeSec = 0;
                 canAttack.Value = true;
             }
-            
-            End: {}
         }
     }
 }

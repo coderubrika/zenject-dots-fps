@@ -1,4 +1,6 @@
 using TestRPG.ECS;
+using TestRPG.PlayerDir;
+using TestRPG.UI;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +15,7 @@ namespace TestRPG
         private PlayerService playerService;
         
         [SerializeField] private Button closeButton;
+        [SerializeField] private SliderView healthBar;
         
         private readonly CompositeDisposable disposables = new();
         
@@ -36,6 +39,12 @@ namespace TestRPG
                     ecsService.Disable();
                     screenService.GoTo<StartScreen>();
                 })
+                .AddTo(disposables);
+            
+            healthBar.SetValue(playerService.PlayerData.Health.Value);
+
+            playerService.PlayerData.Health.OnChange
+                .Subscribe(_ => healthBar.SetValue(playerService.PlayerData.Health.GetPercentage()))
                 .AddTo(disposables);
             
             base.Show();
