@@ -32,6 +32,16 @@ namespace TestRPG
 
         public override void Show()
         {
+            playerService.OnGameState
+                .Where(state => state == GameStateVariant.Stop)
+                .Subscribe(_ =>
+                {
+                    playerService.Clear();
+                    ecsService.Disable();
+                    screenService.GoTo<StartScreen>();
+                })
+                .AddTo(disposables);
+            
             closeButton.OnClickAsObservable()
                 .Subscribe(_ =>
                 {

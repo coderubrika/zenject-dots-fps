@@ -3,12 +3,13 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
+using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
 namespace TestRPG.ECS
 {
     [UpdateInGroup(typeof(SimulationSystemGroup))]
-    public partial struct EnemySpawnSystem : ISystem
+    public partial struct EnemySpawnSystem : ISystem, ISystemStartStop
     {
         private Random random;
         private Entity playerEntity;
@@ -93,6 +94,14 @@ namespace TestRPG.ECS
             ecb.SetComponent(enemy, mass);
             ecb.SetComponent(enemy, followToTarget);
             ecb.SetComponent(enemy, attackTarget);
+        }
+
+        public void OnStartRunning(ref SystemState state) {}
+
+        public void OnStopRunning(ref SystemState state)
+        {
+            isPrefabInit = false;
+            isInit = false;
         }
     }
 }

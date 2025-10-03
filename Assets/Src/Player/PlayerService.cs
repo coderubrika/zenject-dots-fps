@@ -1,5 +1,8 @@
+using System;
 using Suburb.Utils;
+using TestRPG.ECS;
 using TestRPG.GameStates;
+using UniRx;
 
 namespace TestRPG.PlayerDir
 {
@@ -8,11 +11,13 @@ namespace TestRPG.PlayerDir
         private readonly PlayerObject playerObject;
         private readonly StartGameSettingsRepository startGameSettingsRepository;
         private readonly StateRouter<IGameState> router;
+        private readonly CompositeDisposable disposables = new();
         
         private IGameState state;
         private GameContext context;
 
         public PlayerData PlayerData => context.PlayerData;
+        public IObservable<GameStateVariant> OnGameState => context.OnGameState;
         
         public PlayerService(
             PlayerObject playerObject,
@@ -39,6 +44,7 @@ namespace TestRPG.PlayerDir
 
         public void Clear()
         {
+            disposables.Dispose();
             context.Dispose();
             playerObject.PlayerTransform.gameObject.SetActive(false);
         }

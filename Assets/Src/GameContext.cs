@@ -1,16 +1,25 @@
 using System;
+using TestRPG.ECS;
 using TestRPG.PlayerDir;
+using UniRx;
 using Unity.Entities;
 
 namespace TestRPG
 {
     public class GameContext : IDisposable
     {
+        private readonly ReactiveCommand<GameStateVariant> onGameState = new();
+        public IObservable<GameStateVariant> OnGameState => onGameState;
+        public void SendStopGame() => onGameState.Execute(GameStateVariant.Stop);
+        
         public PlayerData PlayerData { get; private set; }
         public void SetPlayerData(PlayerData value) => PlayerData = value;
         
         public Entity PlayerInputEntity { get; private set; }
         public void SetPlayerInputEntity(Entity entity) => PlayerInputEntity = entity;
+        
+        public Entity GameEntity { get; private set; }
+        public void SetGameEntity(Entity entity) => GameEntity = entity;
         
         public Entity PlayerEntity { get; private set; }
         public void SetPlayerEntity(Entity entity) => PlayerEntity = entity;
@@ -24,6 +33,9 @@ namespace TestRPG
         public IDisposable PlayerDataBridge { get; private set; }
         public void SetPlayerDataBridge(IDisposable disposable) => PlayerDataBridge = disposable;
         
+        public IDisposable GameBridge { get; private set; }
+        public void SetGameBridge(IDisposable disposable) => GameBridge = disposable;
+        
         public IDisposable PlayerAndCameraTransformBridge { get; private set; }
         public void SetPlayerAndCameraTransformBridge(IDisposable disposable) => PlayerAndCameraTransformBridge = disposable;
         
@@ -36,6 +48,9 @@ namespace TestRPG
             PlayerAndCameraTransformBridge?.Dispose();
             
             PlayerDataBridge?.Dispose();
+            
+            GameEntity = Entity.Null;
+            GameBridge?.Dispose();
         }
     }
 }

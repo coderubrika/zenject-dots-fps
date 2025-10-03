@@ -22,6 +22,7 @@ namespace TestRPG.GameStates
 
         private GameContext gameContext;
         private Camera playerCamera;
+        private StateRouter<IGameState> router;
         
         public InitGameState(
             PlayerObject playerObject, 
@@ -38,12 +39,15 @@ namespace TestRPG.GameStates
         public void Apply(StateRouter<IGameState> router, GameContext gameContext)
         {
             this.gameContext = gameContext;
+            this.router = router;
             playerCamera = playerObject.PlayerCamera;
+            
             SetupPlayerInputBridge();
             SetupEcsPlayerTransform();
             SetupEcsPlayerCameraTransform();
             SyncEcsPlayerAndCamera();
             SetupPlayerData();
+            SetupGameStateChecker();
         }
 
         
@@ -143,6 +147,31 @@ namespace TestRPG.GameStates
                 });
             
             gameContext.SetPlayerDataBridge(disposable);
+        }
+
+        private void SetupGameStateChecker()
+        {
+            EntityQuery query = ecsService
+                .EntityManager
+                .CreateEntityQuery(typeof(GameState));
+            
+            NativeArray<Entity> entities = query.ToEntityArray(Allocator.Temp);
+            gameContext.SetGameEntity(entities[0]);
+            
+            query.Dispose();
+            entities.Dispose();
+            
+            IDisposable disposable = Observable.EveryLateUpdate()
+                .Subscribe(_ =>
+                {
+                    GameState gameState = ecsService
+                        .EntityManager
+                        .GetComponentData<GameState>(gameContext.GameEntity);
+                    
+                    if (gameState.State == GameStateVariant.Stop)
+                        router.GoTo<StopGameState>();
+                });
+            gameContext.SetGameBridge(disposable);
         }
     }
 }
