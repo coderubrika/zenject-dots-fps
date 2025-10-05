@@ -9,7 +9,7 @@ namespace TestRPG.ECS
         [SerializeField] private Vector3 axis;
         [SerializeField] private Vector3 offset;
         [SerializeField] private float speed;
-        
+        [SerializeField] private bool isDisableByPick;
         
         public class Baker : Baker<RotationAuthoring>
         {
@@ -22,6 +22,9 @@ namespace TestRPG.ECS
                     Speed = authoring.speed,
                     Offset = authoring.offset
                 });
+                
+                if (authoring.isDisableByPick)
+                    AddComponent<DisableRotationByPickTag>(entity);
             }
         }
     }
@@ -32,4 +35,6 @@ namespace TestRPG.ECS
         public float Speed;
         public float3 Offset;
     }
+    
+    public struct DisableRotationByPickTag : IComponentData {}
 }

@@ -36,12 +36,12 @@ namespace TestRPG.ECS
 
         [BurstCompile]
         private void Execute(
-            [EntityIndexInQuery] int entityIndex,
+            [ChunkIndexInQuery] int chunkIndex,
             Entity entity,
             in Health health)
         {
             if (health.Value <= 0)
-                ECB.AddComponent<DeathTag>(entityIndex, entity);
+                ECB.AddComponent<DeathTag>(chunkIndex, entity);
         }
     }
 }

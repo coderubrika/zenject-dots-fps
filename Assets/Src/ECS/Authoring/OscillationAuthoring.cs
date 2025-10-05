@@ -9,6 +9,7 @@ namespace TestRPG.ECS
         [SerializeField] private float amplitude;
         [SerializeField] private Vector3 axis;
         [SerializeField] private float speed;
+        [SerializeField] private bool isDisableByPick;
         
         public class Baker : Baker<OscillationAuthoring>
         {
@@ -22,6 +23,9 @@ namespace TestRPG.ECS
                     Speed = authoring.speed,
                     LocalPosition = authoring.transform.localPosition
                 });
+                
+                if (authoring.isDisableByPick)
+                    AddComponent<DisableOscillationByPickTag>(entity);
             }
         }
     }
@@ -33,4 +37,6 @@ namespace TestRPG.ECS
         public float3 Axis;
         public float3 LocalPosition;
     }
+    
+    public struct DisableOscillationByPickTag : IComponentData {}
 }

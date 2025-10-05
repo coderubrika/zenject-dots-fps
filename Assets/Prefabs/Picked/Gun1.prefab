@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 6495508758575611205}
   - component: {fileID: -6842462848811772695}
   - component: {fileID: 5431590417103914474}
+  - component: {fileID: 5882277687980644508}
   m_Layer: 0
   m_Name: Gun1
   m_TagString: Untagged
@@ -133,6 +134,7 @@ MonoBehaviour:
   axis: {x: 0, y: 1, z: 0}
   offset: {x: 0, y: 0, z: 0.14}
   speed: 180
+  isDisableByPick: 1
 --- !u!114 &5431590417103914474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +149,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amplitude: 0.2
   axis: {x: 0, y: 1, z: 0}
-  speed: 100
+  speed: 300
+  isDisableByPick: 1
+--- !u!114 &5882277687980644508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280384169305417547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a35d256697441fb260786908dbb268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 0
 --- !u!1 &1754082884969878381
 GameObject:
   m_ObjectHideFlags: 0
