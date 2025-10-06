@@ -1622,6 +1622,8 @@ GameObject:
   - component: {fileID: 8545693893736119015}
   - component: {fileID: 8545693893736119016}
   - component: {fileID: 8545693893736119017}
+  - component: {fileID: 8545693893736119019}
+  - component: {fileID: 8545693893736119018}
   m_Layer: 6
   m_Name: UnitPlayer
   m_TagString: Untagged
@@ -1962,6 +1964,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 1000
+--- !u!114 &8545693893736119018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3042390283244732612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4ced13fcd741f390cc1d0cf6c2621b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8545693893736119019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3042390283244732612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a482b91970994b78b07bbdefaf24210b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8623623365664415309
 Transform:
   m_ObjectHideFlags: 0

@@ -59,7 +59,7 @@ namespace TestRPG.ECS
         }
 
         [BurstCompile]
-        private void AddEventData(Entity main, Entity other)
+        private void AddEventData(in Entity main, in Entity other)
         {
             ECB.AddComponent(main.Index, main, new TriggerEventData
             {
