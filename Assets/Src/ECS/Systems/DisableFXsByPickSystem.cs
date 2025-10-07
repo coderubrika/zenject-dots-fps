@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace TestRPG.ECS
 {
-    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateInGroup(typeof(PickedDisableFXGroup))]
     public partial struct DisableRotationByPickSystem : ISystem
     {
         [BurstCompile]
@@ -47,7 +47,7 @@ namespace TestRPG.ECS
     
     //-----------------------------------------------
     
-    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateInGroup(typeof(PickedDisableFXGroup))]
     public partial struct DisableOscillationByPickSystem : ISystem
     {
         [BurstCompile]

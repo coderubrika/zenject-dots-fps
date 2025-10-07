@@ -31,7 +31,7 @@ namespace TestRPG.ECS
                 Picks = picks
             };
 
-            state.Dependency = job.ScheduleParallel(state.Dependency);
+            state.Dependency = job.Schedule(state.Dependency);
         }
     }
     
@@ -49,6 +49,7 @@ namespace TestRPG.ECS
 
             Pick pick = Picks[eventData.OtherEntity];
             ECB.DestroyEntity(chunkIndex, eventData.OtherEntity);
+            ECB.RemoveComponent<TriggerEventData>(chunkIndex, entity);
             ECB.SetComponentEnabled<Picked>(chunkIndex, pick.PickEntity, true);
         }
     }

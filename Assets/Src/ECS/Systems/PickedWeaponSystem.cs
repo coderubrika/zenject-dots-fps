@@ -1,16 +1,20 @@
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 
 namespace TestRPG.ECS
 {
+    [UpdateAfter(typeof(PickedDisableFXGroup))]
     public partial struct PickedWeaponSystem : ISystem
     {
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<WeaponInventory>();
             state.RequireForUpdate<Player>();
         }
         
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             Entity playerEntity = SystemAPI.GetSingletonEntity<Player>();
