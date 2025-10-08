@@ -13,6 +13,8 @@ namespace TestRPG.ECS
             {
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity, new Weapon());
+                SetComponentEnabled<Weapon>(entity, false);
+                
                 AddComponent(entity, new InventoryItem
                 {
                     ItemId = authoring.itemId,
@@ -21,6 +23,8 @@ namespace TestRPG.ECS
             }
         }
     }
-    
-    public struct Weapon : IComponentData {}
+
+    public struct Weapon : IComponentData, IEnableableComponent
+    {
+    }
 }

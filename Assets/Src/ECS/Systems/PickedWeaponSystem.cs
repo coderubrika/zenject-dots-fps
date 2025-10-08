@@ -1,5 +1,4 @@
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 
 namespace TestRPG.ECS
@@ -21,17 +20,15 @@ namespace TestRPG.ECS
             var playerInventoryBuffer = SystemAPI.GetBuffer<WeaponInventorySlot>(playerEntity);
             var playerInventory = SystemAPI.GetSingletonRW<WeaponInventory>();
             
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
             foreach (var (
                          inventoryItem,
                          entity) in SystemAPI.Query<
                          RefRW<InventoryItem>>()
-                         .WithAll<Weapon>()
+                         .WithDisabled<Weapon>()
                          .WithAll<Picked>()
                          .WithEntityAccess())
             {
-                ecb.SetComponentEnabled<Picked>(entity, false);
-                
+                SystemAPI.SetComponentEnabled<Picked>(entity, false);
                 int index = playerInventoryBuffer.Add(new WeaponInventorySlot
                 {
                     ItemEntity = entity,
@@ -40,12 +37,8 @@ namespace TestRPG.ECS
                 
                 inventoryItem.ValueRW.Index = index;
                 playerInventory.ValueRW.SelectedItem = index;
-                
-                ecb.SetComponentEnabled<IsChangedWeapon>(playerEntity, true);
+                SystemAPI.SetComponentEnabled<IsChangedWeapon>(playerEntity, true);
             }
-            
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
         }
     }
 }
